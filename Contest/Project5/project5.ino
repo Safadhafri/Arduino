@@ -255,8 +255,8 @@ void ahead(){
     digitalWrite(lb,LOW);
     digitalWrite(ra,HIGH);
     digitalWrite(rb,LOW);
-    analogWrite(lr,255);
-    analogWrite(rr,255);
+    analogWrite(lr,400);
+    analogWrite(rr,400);
 }
 
 /**
