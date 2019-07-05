@@ -109,7 +109,7 @@ void setup(){
     pinMode(out3,INPUT);
     pinMode(out4,INPUT);
     pinMode(out5,INPUT);
-    Serial.begin(9600);
+    //Serial.begin(9600);
     //digitalWrite(light,HIGH);
     pinMode(13,OUTPUT);//完全停止后提示用
     //电机接口初始化
@@ -118,17 +118,19 @@ void setup(){
     pinMode(ra,OUTPUT);
     pinMode(rb,OUTPUT);
 
-    pinMode(lr,OUTPUT);
-    pinMode(rr,OUTPUT);
+    //pinMode(lr,OUTPUT);
+    //pinMode(rr,OUTPUT);
     //stop();//刚开始是停止
     delay(4000);
 }
 
 
 void loop(){
+    //run();
+    digitalWrite(13,HIGH);
     ahead();
-    Serial.print(analogRead(lr));
-    Serial.println(analogRead(rr));
+    //Serial.print(analogRead(lr));
+    //Serial.println(analogRead(rr));
 }
 
 void run(){
@@ -173,6 +175,7 @@ void run(){
  * 判断函数，用于判断小车目前状态，并返回对应的值
  */
 int judge(){
+    static int temp = 0;
     if(digitalRead(out2)==0 && digitalRead(out3)==0 && digitalRead(out4)==0){
         //优先判断是否停止
         return st;
@@ -194,10 +197,12 @@ int judge(){
         return glq;
     }else if(digitalRead(out3)==0){
         //偏移状态反向
-        if(deflection==deflection_left){
+        if(deflection==deflection_left && temp==0){
             deflection = deflection_right;
-        }else if(deflection==deflection_right){
+            temp = 1;
+        }else if(deflection==deflection_right && temp==0){
             deflection = deflection_left;
+            temp = 1;
         }
         //前进
         return ga;
@@ -208,10 +213,12 @@ int judge(){
         }else if(deflection==deflection_left){
             //deflection = deflection_right;
             //偏移右转
+            temp = 0;
             return gr;
         }else if(deflection==deflection_right){
             //deflection = deflection_left;
             //偏移左转
+            temp = 0;
             return gl;
         }
     }
@@ -251,12 +258,12 @@ void stop_long(){
  * 直行
  */
 void ahead(){
+    analogWrite(lr,10);
+    analogWrite(rr,10);
     digitalWrite(la,HIGH);
     digitalWrite(lb,LOW);
     digitalWrite(ra,HIGH);
     digitalWrite(rb,LOW);
-    analogWrite(lr,400);
-    analogWrite(rr,400);
 }
 
 /**
