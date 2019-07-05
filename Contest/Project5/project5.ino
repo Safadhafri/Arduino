@@ -109,7 +109,7 @@ void setup(){
     pinMode(out3,INPUT);
     pinMode(out4,INPUT);
     pinMode(out5,INPUT);
-    //Serial.begin(9600);
+    Serial.begin(9600);
     //digitalWrite(light,HIGH);
     pinMode(13,OUTPUT);//完全停止后提示用
     //电机接口初始化
@@ -117,14 +117,21 @@ void setup(){
     pinMode(lb,OUTPUT);
     pinMode(ra,OUTPUT);
     pinMode(rb,OUTPUT);
-    //pinMode(lr,OUTPUT);
-    //pinMode(rr,OUTPUT);
+
+    pinMode(lr,OUTPUT);
+    pinMode(rr,OUTPUT);
     //stop();//刚开始是停止
     delay(4000);
 }
 
 
 void loop(){
+    ahead();
+    Serial.print(analogRead(lr));
+    Serial.println(analogRead(rr));
+}
+
+void run(){
     switch (judge()){
     case ga:
         ahead();
@@ -248,8 +255,8 @@ void ahead(){
     digitalWrite(lb,LOW);
     digitalWrite(ra,HIGH);
     digitalWrite(rb,LOW);
-    //analogWrite(lr,255);
-    //analogWrite(rr,255);
+    analogWrite(lr,255);
+    analogWrite(rr,255);
 }
 
 /**
