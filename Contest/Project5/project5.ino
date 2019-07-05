@@ -78,8 +78,8 @@
 #define ra 4//N3
 #define rb 2//N4
 
-//#define lr 5//左边速度
-//#define rr 6//右边速度
+#define lr 5//左边速度
+#define rr 6//右边速度
 
 //#define defspeed 0//默认速度
 
@@ -96,6 +96,8 @@
 //偏移状态
 #define deflection_left 1
 #define deflection_right 3
+
+#define dtime 100
 
 //偏移状态
 static int deflection = 0;
@@ -126,21 +128,35 @@ void loop(){
     switch (judge()){
     case ga:
         ahead();
+        delay(dtime);
+        stop();
         break;
     case gl:
         turn_left();
+        delay(dtime);
+        stop();
+        //delay(dtime);
         break;
     case glq:
         turn_left_quickly();
+        delay(dtime);
+        stop();
         break;
     case gr:
         turn_right();
+        delay(dtime);
+        stop();
+        //delay(dtime);
         break;
     case grq:
         turn_right_quickly();
+        delay(dtime);
+        stop();
         break;
     case st:
         stop_long();
+        delay(dtime);
+        stop();
     default:
         break;
     }
@@ -156,19 +172,19 @@ int judge(){
     }else if(digitalRead(out2)==0){
         deflection = deflection_left;
         //左转
-        return gl;
+        return gr;
     }else if(digitalRead(out4)==0){
         deflection = deflection_right;
         //右转
-        return gr;
+        return gl;
     }else if(digitalRead(out1)==0){
         deflection = deflection_left;
         //急速左转
-        return glq;
+        return grq;
     }else if(digitalRead(out5)==0){
         deflection = deflection_right;
         //急速右转
-        return grq;
+        return glq;
     }else if(digitalRead(out3)==0){
         //偏移状态反向
         if(deflection==deflection_left){
@@ -232,8 +248,8 @@ void ahead(){
     digitalWrite(lb,LOW);
     digitalWrite(ra,HIGH);
     digitalWrite(rb,LOW);
-    //analogWrite(lr,rate);
-    //analogWrite(rr,rate);
+    //analogWrite(lr,255);
+    //analogWrite(rr,255);
 }
 
 /**
@@ -279,7 +295,7 @@ void turn_right(){
  */
 void turn_left_quickly(){
     int temp = 0;
-    while(temp<1){
+    //while(temp<1){
         digitalWrite(la,LOW);
         digitalWrite(lb,HIGH);
         digitalWrite(ra,HIGH);
@@ -289,7 +305,7 @@ void turn_left_quickly(){
         if(digitalRead(out3)==1 && temp==0){
             temp = 1;
         }  
-    }
+    //}
     
 }
 
@@ -298,7 +314,7 @@ void turn_left_quickly(){
  */
 void turn_right_quickly(){
     int temp = 0;
-    while(temp<1){
+    //while(temp<1){
         digitalWrite(la,HIGH);
         digitalWrite(lb,LOW);
         digitalWrite(ra,LOW);
@@ -308,5 +324,5 @@ void turn_right_quickly(){
         if(digitalRead(out3)==1 && temp==0){
             temp = 1;
         }  
-    }
+    //}
 }
