@@ -128,35 +128,35 @@ void loop(){
     switch (judge()){
     case ga:
         ahead();
-        delay(dtime);
-        stop();
+        //delay(dtime);
+        //stop();
         break;
     case gl:
         turn_left();
-        delay(dtime);
-        stop();
+        //delay(dtime);
+        //stop();
         //delay(dtime);
         break;
     case glq:
         turn_left_quickly();
-        delay(dtime);
-        stop();
+        //delay(dtime);
+        //stop();
         break;
     case gr:
         turn_right();
-        delay(dtime);
-        stop();
+        ////delay(dtime);
+        //stop();
         //delay(dtime);
         break;
     case grq:
         turn_right_quickly();
-        delay(dtime);
-        stop();
+        //delay(dtime);
+        //stop();
         break;
     case st:
         stop_long();
-        delay(dtime);
-        stop();
+        //delay(dtime);
+        //stop();
     default:
         break;
     }
