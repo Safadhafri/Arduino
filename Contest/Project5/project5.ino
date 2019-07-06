@@ -126,9 +126,9 @@ void setup(){
 
 
 void loop(){
-    //run();
-    digitalWrite(13,HIGH);
-    ahead();
+    run();
+    //digitalWrite(13,HIGH);
+    //ahead();
     //Serial.print(analogRead(lr));
     //Serial.println(analogRead(rr));
 }
