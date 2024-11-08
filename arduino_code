@@ -1,0 +1,83 @@
+#include <ESP8266WiFi.h>
+#include <Ultrasonic.h>
+
+#define LEDPIN1 D2
+#define LEDPIN2 D3
+Ultrasonic ultrasonic(D0, D1);
+WiFiClient client;
+
+String strUbidotsAccountToken = "BBUS-L0kDNm5yPKH0xKnBexP6MqzF9oXV3W";
+
+String full_level  = "672105ce09631f04dce2b236";
+String best_route = "672105e131c42104bb3aaea2";
+
+const char* ssid = "Naser-2.4G";
+const char* password = "995658422";
+
+void setup()
+{
+  Serial.begin(57600);
+  pinMode(LEDPIN1, OUTPUT);
+  pinMode(LEDPIN2, OUTPUT);
+}
+void loop()
+{
+  Serial.print("Distance in Inches: ");
+  Serial.println(ultrasonic.distanceRead(INC));
+  ubiSave_value(String(full_level), String(ultrasonic.distanceRead(INC)));
+
+  if (ultrasonic.distanceRead(INC) <= 10)
+  {
+    for (int i = 0; i < 5; i++)
+    {
+      digitalWrite(LEDPIN1 , HIGH);
+      digitalWrite(LEDPIN2 , LOW);
+      delay(200);
+    }
+  }
+  else
+  {
+    digitalWrite(LEDPIN1, LOW);
+    digitalWrite(LEDPIN2, HIGH);
+  }
+  delay(1000);
+}
+void ubiSave_value(String variable_id, String value)
+{
+  String var = "{\"value\": " + value + "}";
+  String length = String(var.length());
+
+  if (client.connect("things.ubidots.com", 80))
+  {
+    Serial.println("Connected to Ubidots...");
+    delay(1000);
+
+    client.println("POST /api/v1.6/variables/" + variable_id + "/values HTTP/1.1");
+    Serial.println("POST /api/v1.6/variables/" + variable_id + "/values HTTP/1.1");
+    client.println("Content-Type: application/json");
+    Serial.println("Content-Type: application/json");
+    client.println("Content-Length: " + length);
+    Serial.println("Content-Length: " + length);
+    client.println("X-Auth-Token: " + strUbidotsAccountToken);
+    Serial.println("X-Auth-Token: " + strUbidotsAccountToken);
+    client.println("Host: things.ubidots.com\n");
+    Serial.println("Host: things.ubidots.com\n");
+    client.print(var);
+    Serial.print(var + "\n");
+  }
+  else
+  {
+    Serial.println("Ubidots connection failed...");
+  }
+  while (client.available())
+  {
+    char c = client.read();
+    Serial.print(c);
+  }
+  if (client.connected())
+  {
+    Serial.println("Disconnecting from Ubidots...");
+    client.stop();
+  }
+}
+
